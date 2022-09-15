@@ -2,10 +2,6 @@ require('dotenv').config();
 const admin = require("firebase-admin");
 const fs = require("fs");
 const { parse } = require("csv-parse");
-const loading = require('loading-cli');
-
-const loader = loading('')
-loader.frame(['/', '-', '\\', '|']);
 
 const {
     FIREBASE_PRIVATE_KEY_PATH,
@@ -39,7 +35,6 @@ function createCsvParser() {
 function onStart() {
     console.log(`Uploading data from ${CITY_CSV_PATH} to Firestore`);
     console.log(`Firebase Project ID: ${serviceAccount.project_id}`);
-    loader.start();
     console.time('Execution time');
 }
 
@@ -52,12 +47,10 @@ function onEndReadFile() {
     for (const name of countryNames) {
         countriesCollection.add({ name });
     }
-    loader.stop();
     console.timeEnd('Execution time')
 }
 
 function onError(err) {
-    loader.stop();
     console.error(err);
 }
 
